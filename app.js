@@ -58,7 +58,7 @@ actualizarPantalla();
 descargar.addEventListener("click", () => {
     let csv = "fecha,hora,contexto\n";
     registros.forEach(r => {
-        csv += `${r.fecha},${r.hora},${r.contexto}\n`;
+        csv += `${r.fecha};${r.hora};${r.contexto}\n`;
     });
 
     const blob = new Blob([csv], { type: "text/csv" });

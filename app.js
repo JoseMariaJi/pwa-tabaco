@@ -56,7 +56,7 @@ actualizarPantalla();
 
 // Descargar CSV
 descargar.addEventListener("click", () => {
-    let csv = "fecha,hora,contexto\n";
+    let csv = "fecha;hora;contexto\n";
     registros.forEach(r => {
         csv += `${r.fecha};${r.hora};${r.contexto}\n`;
     });

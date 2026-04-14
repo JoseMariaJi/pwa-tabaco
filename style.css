@@ -1,0 +1,37 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 20px;
+}
+
+#boton-rojo {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 40px;
+    font-size: 30px;
+    border-radius: 20px;
+    margin-top: 20px;
+    width: 80%;
+    transition: transform 0.1s, background-color 0.1s;
+}
+
+#boton-rojo:active {
+    background-color: darkred;
+    transform: scale(0.95);
+}
+
+#mensaje {
+    color: red;
+    font-weight: bold;
+}
+
+.oculto {
+    display: none;
+}
+
+#descargar {
+    margin-top: 30px;
+    padding: 15px;
+    font-size: 18px;
+}

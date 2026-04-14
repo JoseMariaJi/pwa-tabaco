@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Cigarrillos</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+
+    <h1>Registro de Cigarrillos</h1>
+
+    <label for="contexto">Contexto:</label>
+    <select id="contexto">
+        <option value="">-- Selecciona --</option>
+        <option value="Ordenador">Ordenador</option>
+        <option value="Descanso">Descanso</option>
+        <option value="Pelicula">Película</option>
+        <option value="Social">Social</option>
+        <option value="Post-ingesta">Post-ingesta</option>
+        <option value="Otro">Otro</option>
+    </select>
+
+    <button id="boton-rojo">FUMAR</button>
+
+    <p id="mensaje" class="oculto"></p>
+
+    <div id="info-dia">
+        <p id="contador"></p>
+        <p id="ultimo"></p>
+    </div>
+
+    <button id="descargar">Descargar CSV</button>
+
+    <script src="app.js"></script>
+</body>
+</html>

@@ -72,3 +72,6 @@ body {
     padding: 15px;
     font-size: 18px;
 }
+#canvas-grafico {
+    width: 1500px; /* ancho grande para scroll horizontal */
+}

@@ -10,7 +10,7 @@
 <body>
 
     <h1>Registro de Cigarrillos</h1>
-
+<div id="pantalla-principal">
     <label for="contexto">Contexto:</label>
     <select id="contexto">
         <option value="">-- Selecciona --</option>
@@ -36,9 +36,46 @@
 
     <button id="descargar">Descargar CSV</button>
     <button id="importarBtn">Importar CSV</button>
-<input type="file" id="archivoCSV" accept=".csv" style="display:none">
+    <input type="file" id="archivoCSV" accept=".csv" style="display:none">
+
+    <button id="mostrargrafico">Mostrar Grafico</button>
+    
+
 
     <div id="version" style="font-size:12px; color:#888; margin-top:20px;"></div>
+    </div>
+
+
+<div id="pantalla-grafico" style="display:none; padding:20px;">
+    <button id="volver-principal" style="margin-bottom:15px;">Volver</button>
+
+    <div style="margin-bottom:10px;">
+        <label>Periodo:</label>
+        <select id="selector-periodo">
+            <option value="dia">Últimos 6 días</option>
+            <option value="semana">Últimas 6 semanas</option>
+            <option value="mes">Últimos 6 meses</option>
+        </select>
+
+        <label style="margin-left:20px;">Contexto:</label>
+        <select id="selector-contexto">
+            <option value="todos">Todos</option>
+            <option value="Ordenador">Ordenador</option>
+            <option value="Descanso">Descanso</option>
+            <option value="Pelicula">Película</option>
+            <option value="Social">Social</option>
+            <option value="Post-ingesta">Post-ingesta</option>
+            <option value="Otro">Otro</option>
+        </select>
+    </div>
+
+    <div id="contenedor-grafico" style="overflow-x:auto; width:100%;">
+        <canvas id="canvas-grafico" height="300"></canvas>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
     <script src="app.js"></script>
 </body>
 </html>

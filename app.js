@@ -8,7 +8,7 @@ const mensaje = document.getElementById("mensaje");
 const contador = document.getElementById("contador");
 const ultimo = document.getElementById("ultimo");
 const descargar = document.getElementById("descargar");
-const APP_VERSION = "v10";  // cambia esto cuando cambies el SW
+const APP_VERSION = "v11";  // cambia esto cuando cambies el SW
 
 document.getElementById("version").textContent = APP_VERSION;
 
@@ -98,6 +98,12 @@ if ("serviceWorker" in navigator) {
     });
 }
 
+/*boton de mostrar grafico*/
+document.getElementById("mostrargrafico").addEventListener("click", () => {
+    mostrarGrafico();
+});
+
+
 // Botón para importar CSV
 document.getElementById("importarBtn").addEventListener("click", () => {
     document.getElementById("archivoCSV").click();
@@ -138,3 +144,142 @@ document.getElementById("archivoCSV").addEventListener("change", function() {
 
     lector.readAsText(archivo);
 });
+
+
+/* GRAFICO */
+let grafico = null;
+
+const coloresContexto = {
+    "Ordenador": "#4A90E2",
+    "Descanso": "#7ED321",
+    "Pelicula": "#F5A623",
+    "Social": "#BD10E0",
+    "Post-ingesta": "#D0021B",
+    "Otro": "#9B9B9B"
+};
+
+function mostrarGrafico() {
+    document.getElementById("pantalla-principal").style.display = "none";
+    document.getElementById("pantalla-grafico").style.display = "block";
+
+    actualizarGrafico();
+}
+
+document.getElementById("volver-principal").addEventListener("click", () => {
+    document.getElementById("pantalla-grafico").style.display = "none";
+    document.getElementById("pantalla-principal").style.display = "block";
+});
+
+document.getElementById("selector-periodo").addEventListener("change", actualizarGrafico);
+document.getElementById("selector-contexto").addEventListener("change", actualizarGrafico);
+
+function actualizarGrafico() {
+    const periodo = document.getElementById("selector-periodo").value;
+    const contexto = document.getElementById("selector-contexto").value;
+
+    const { labels, datosPorContexto } = calcularDatos(periodo);
+
+    // Construir datasets
+    let datasets = [];
+
+    if (contexto === "todos") {
+        // Todos los contextos → barras apiladas
+        for (let ctx in datosPorContexto) {
+            datasets.push({
+                label: ctx,
+                data: datosPorContexto[ctx],
+                backgroundColor: coloresContexto[ctx],
+                stack: "stack1"
+            });
+        }
+    } else {
+        // Solo un contexto → un solo dataset
+        datasets.push({
+            label: contexto,
+            data: datosPorContexto[contexto],
+            backgroundColor: coloresContexto[contexto],
+            stack: "stack1"
+        });
+    }
+
+    // Destruir gráfico previo
+    if (grafico) grafico.destroy();
+
+    const ctx = document.getElementById("canvas-grafico").getContext("2d");
+
+    grafico = new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels,
+            datasets
+        },
+        options: {
+            responsive: false,
+            plugins: {
+                datalabels: {
+                    color: "#000",
+                    anchor: "end",
+                    align: "top",
+                    font: { size: 12 },
+                    formatter: (value) => value > 0 ? value : ""
+                }
+            },
+            scales: {
+                x: { stacked: true },
+                y: { stacked: true, beginAtZero: true }
+            }
+        },
+        plugins: [ChartDataLabels]
+    });
+
+    // Scroll al final
+    const cont = document.getElementById("contenedor-grafico");
+    setTimeout(() => {
+        cont.scrollLeft = cont.scrollWidth;
+    }, 50);
+}
+
+
+/* calculo de periodos */
+function calcularDatos(periodo) {
+    const ahora = new Date();
+    let labels = [];
+    let datosPorContexto = {
+        "Ordenador": [],
+        "Descanso": [],
+        "Pelicula": [],
+        "Social": [],
+        "Post-ingesta": [],
+        "Otro": []
+    };
+
+    function formatearFecha(d) {
+        return d.toISOString().split("T")[0];
+    }
+
+    if (periodo === "dia") {
+        for (let i = 5; i >= 0; i--) {
+            let d = new Date();
+            d.setDate(ahora.getDate() - i);
+            let fecha = formatearFecha(d);
+            labels.push(fecha);
+
+            // Inicializar
+            for (let ctx in datosPorContexto) datosPorContexto[ctx].push(0);
+
+            registros.forEach(r => {
+                if (r.fecha === fecha) {
+                    datosPorContexto[r.contexto][labels.length - 1]++;
+                }
+            });
+        }
+    }
+
+    // Semanas y meses se implementan igual (si quieres, te los preparo también)
+
+    return { labels, datosPorContexto };
+}
+
+
+
+

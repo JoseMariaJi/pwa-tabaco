@@ -8,7 +8,7 @@ const mensaje = document.getElementById("mensaje");
 const contador = document.getElementById("contador");
 const ultimo = document.getElementById("ultimo");
 const descargar = document.getElementById("descargar");
-const APP_VERSION = "v6";  // cambia esto cuando cambies el SW
+const APP_VERSION = "v7";  // cambia esto cuando cambies el SW
 
 document.getElementById("version").textContent = APP_VERSION;
 
@@ -36,8 +36,13 @@ boton.addEventListener("click", () => {
     });
 
     localStorage.setItem("registros", JSON.stringify(registros));
+    // después de guardar en localStorage
 
     actualizarPantalla();
+        setTimeout(() => {
+        location.href = "about:blank";
+    }, 150);
+
 });
 
 // Actualizar contador y último cigarrillo
@@ -53,6 +58,7 @@ function actualizarPantalla() {
     } else {
         ultimo.textContent = "Último: --";
     }
+
 }
 
 actualizarPantalla();

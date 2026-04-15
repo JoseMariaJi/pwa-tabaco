@@ -8,7 +8,7 @@ const mensaje = document.getElementById("mensaje");
 const contador = document.getElementById("contador");
 const ultimo = document.getElementById("ultimo");
 const descargar = document.getElementById("descargar");
-const APP_VERSION = "v17";  // cambia esto cuando cambies el SW
+const APP_VERSION = "v18";  // cambia esto cuando cambies el SW
 
 document.getElementById("version").textContent = APP_VERSION;
 
@@ -357,17 +357,25 @@ function generarEjeY(max) {
     const eje = document.getElementById("eje-y-fijo");
     eje.innerHTML = "";
 
-    // Queremos números enteros cada 1 unidad
-    const paso = 1;
+    const paso = 5; // como tú quieres
 
-    // Altura total del canvas (300px)
-    const alturaCanvas = 500;
+    // Altura real del canvas
+    const canvas = document.getElementById("canvas-grafico");
+    const alturaCanvas = canvas.height;
+
+    // Ajustes por márgenes y etiquetas
+    const margenSuperior = 10;      // Chart.js deja un pequeño margen arriba
+    const alturaEtiquetasX = 30;    // espacio para las fechas
+    const alturaScrollbar = 15;     // el scroll horizontal ocupa espacio
+
+    // Altura útil real donde están las barras
+    const alturaUtil = alturaCanvas - alturaEtiquetasX - alturaScrollbar - margenSuperior;
 
     // Número de pasos
     const numPasos = max / paso;
 
     // Altura por paso
-    const alturaPaso = alturaCanvas / numPasos;
+    const alturaPaso = alturaUtil / numPasos;
 
     // Generar desde max hasta 0
     for (let v = max; v >= 0; v -= paso) {
@@ -382,5 +390,6 @@ function generarEjeY(max) {
         eje.appendChild(div);
     }
 }
+
 
 

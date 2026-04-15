@@ -8,7 +8,7 @@ const mensaje = document.getElementById("mensaje");
 const contador = document.getElementById("contador");
 const ultimo = document.getElementById("ultimo");
 const descargar = document.getElementById("descargar");
-const APP_VERSION = "v18";  // cambia esto cuando cambies el SW
+const APP_VERSION = "v19";  // cambia esto cuando cambies el SW
 
 document.getElementById("version").textContent = APP_VERSION;
 
@@ -357,39 +357,37 @@ function generarEjeY(max) {
     const eje = document.getElementById("eje-y-fijo");
     eje.innerHTML = "";
 
-    const paso = 5; // como tú quieres
+    const pasoNumero = 5;   // mostrar número cada 5
+    const pasoRaya = 1;     // mostrar raya cada 1
 
-    // Altura real del canvas
-    const canvas = document.getElementById("canvas-grafico");
-    const alturaCanvas = canvas.height;
+    // Área real del gráfico (sin márgenes ni etiquetas)
+    const top = grafico.chartArea.top;
+    const bottom = grafico.chartArea.bottom;
 
-    // Ajustes por márgenes y etiquetas
-    const margenSuperior = 10;      // Chart.js deja un pequeño margen arriba
-    const alturaEtiquetasX = 30;    // espacio para las fechas
-    const alturaScrollbar = 15;     // el scroll horizontal ocupa espacio
+    const alturaUtil = bottom - top;
 
-    // Altura útil real donde están las barras
-    const alturaUtil = alturaCanvas - alturaEtiquetasX - alturaScrollbar - margenSuperior;
+    // Número total de unidades
+    const numUnidades = max;
 
-    // Número de pasos
-    const numPasos = max / paso;
-
-    // Altura por paso
-    const alturaPaso = alturaUtil / numPasos;
+    // Altura por unidad
+    const alturaUnidad = alturaUtil / numUnidades;
 
     // Generar desde max hasta 0
-    for (let v = max; v >= 0; v -= paso) {
+    for (let v = max; v >= 0; v -= pasoRaya) {
         const div = document.createElement("div");
-        div.style.height = alturaPaso + "px";
+        div.style.height = alturaUnidad + "px";
+        div.style.display = "flex";
+        div.style.alignItems = "center";
+        div.style.justifyContent = "flex-end";
+
+        // Número solo cada 5
+        const numero = (v % pasoNumero === 0) ? `<span>${v}</span>` : `<span style="width:20px;"></span>`;
 
         div.innerHTML = `
-            <span>${v}</span>
+            ${numero}
             <span class="raya"></span>
         `;
 
         eje.appendChild(div);
     }
 }
-
-
-

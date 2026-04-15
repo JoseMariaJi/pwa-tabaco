@@ -8,7 +8,7 @@ const mensaje = document.getElementById("mensaje");
 const contador = document.getElementById("contador");
 const ultimo = document.getElementById("ultimo");
 const descargar = document.getElementById("descargar");
-const APP_VERSION = "v12";  // cambia esto cuando cambies el SW
+const APP_VERSION = "v13";  // cambia esto cuando cambies el SW
 
 document.getElementById("version").textContent = APP_VERSION;
 
@@ -219,8 +219,8 @@ function actualizarGrafico() {
                 legend: { display: false },
                 datalabels: {
                     color: "#000",
-                    anchor: "end",
-                    align: "top",
+                    anchor: "center",
+                    align: "center",
                     font: { size: 12 },
                     formatter: (value) => value > 0 ? value : ""
                 }
@@ -259,7 +259,7 @@ function calcularDatos(periodo) {
     }
 
     if (periodo === "dia") {
-        for (let i = 5; i >= 0; i--) {
+        for (let i = 15; i >= 0; i--) {
             let d = new Date();
             d.setDate(ahora.getDate() - i);
             let fecha = formatearFecha(d);

@@ -8,7 +8,7 @@ const mensaje = document.getElementById("mensaje");
 const contador = document.getElementById("contador");
 const ultimo = document.getElementById("ultimo");
 const descargar = document.getElementById("descargar");
-const APP_VERSION = "v8";  // cambia esto cuando cambies el SW
+const APP_VERSION = "v9";  // cambia esto cuando cambies el SW
 
 document.getElementById("version").textContent = APP_VERSION;
 
@@ -94,3 +94,43 @@ if ("serviceWorker" in navigator) {
     });
 }
 
+// Botón para importar CSV
+document.getElementById("importarBtn").addEventListener("click", () => {
+    document.getElementById("archivoCSV").click();
+});
+
+document.getElementById("archivoCSV").addEventListener("change", function() {
+    const archivo = this.files[0];
+    if (!archivo) return;
+
+    const lector = new FileReader();
+
+    lector.onload = function(e) {
+        const texto = e.target.result;
+        const lineas = texto.split("\n").map(l => l.trim()).filter(l => l.length > 0);
+
+        // Primera línea es cabecera: fecha;hora;contexto
+        const registrosImportados = [];
+
+        for (let i = 1; i < lineas.length; i++) {
+            const partes = lineas[i].split(";");
+            if (partes.length < 3) continue;
+
+            registrosImportados.push({
+                fecha: partes[0],
+                hora: partes[1],
+                contexto: partes[2]
+            });
+        }
+
+        // Guardar en localStorage
+        localStorage.setItem("registros", JSON.stringify(registrosImportados));
+
+        // Actualizar pantalla
+        actualizarPantalla();
+
+        alert("Datos importados correctamente.");
+    };
+
+    lector.readAsText(archivo);
+});

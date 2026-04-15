@@ -8,7 +8,7 @@ const mensaje = document.getElementById("mensaje");
 const contador = document.getElementById("contador");
 const ultimo = document.getElementById("ultimo");
 const descargar = document.getElementById("descargar");
-const APP_VERSION = "v16";  // cambia esto cuando cambies el SW
+const APP_VERSION = "v17";  // cambia esto cuando cambies el SW
 
 document.getElementById("version").textContent = APP_VERSION;
 
@@ -250,6 +250,9 @@ canvas.width = 2000;             // MUY IMPORTANTE: fijar el width real del canv
         },
         plugins: [ChartDataLabels]
     });
+// Generar eje Y fijo según el máximo del gráfico
+const maxY = grafico.scales.y.max;
+generarEjeY(maxY);
 
     // Scroll al final
     const cont = document.getElementById("contenedor-grafico");
@@ -350,5 +353,34 @@ function obtenerSemanaISO(fecha) {
     };
 }
 
+function generarEjeY(max) {
+    const eje = document.getElementById("eje-y-fijo");
+    eje.innerHTML = "";
+
+    // Queremos números enteros cada 1 unidad
+    const paso = 1;
+
+    // Altura total del canvas (300px)
+    const alturaCanvas = 500;
+
+    // Número de pasos
+    const numPasos = max / paso;
+
+    // Altura por paso
+    const alturaPaso = alturaCanvas / numPasos;
+
+    // Generar desde max hasta 0
+    for (let v = max; v >= 0; v -= paso) {
+        const div = document.createElement("div");
+        div.style.height = alturaPaso + "px";
+
+        div.innerHTML = `
+            <span>${v}</span>
+            <span class="raya"></span>
+        `;
+
+        eje.appendChild(div);
+    }
+}
 
 

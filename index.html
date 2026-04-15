@@ -77,9 +77,20 @@
     <span style="color:#9B9B9B;">■</span> Otro
 </div>
 
+ <div id="zona-grafico" style="display:flex; align-items:flex-start; margin-top:10px;">
+    
+    <!-- EJE Y FIJO -->
+    <div id="eje-y-fijo" 
+         style="width:40px; text-align:right; padding-right:6px; font-size:12px; line-height:1;">
+    </div>
+
+    <!-- CANVAS CON SCROLL -->
     <div id="contenedor-grafico" style="overflow-x:auto; width:100%;">
         <canvas id="canvas-grafico" height="500"></canvas>
     </div>
+
+</div>
+
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>

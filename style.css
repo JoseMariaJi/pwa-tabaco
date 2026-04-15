@@ -75,3 +75,16 @@ body {
 #canvas-grafico {
     width: 1500px; /* ancho grande para scroll horizontal */
 }
+#eje-y-fijo div {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: 20px; /* Se recalcula dinámicamente en JS */
+}
+
+#eje-y-fijo .raya {
+    width: 10px;
+    height: 1px;
+    background: black;
+    margin-left: 4px;
+}

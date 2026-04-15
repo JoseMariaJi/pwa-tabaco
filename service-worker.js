@@ -1,4 +1,4 @@
-const CACHE = "tabaco-cache-v7";
+const CACHE = "tabaco-cache-v8";
 const FILES = [
     "./",
     "./index.html",
@@ -27,6 +27,10 @@ self.addEventListener("activate", event => {
         )
     );
     self.clients.claim(); // el SW nuevo controla todas las ventanas ya abiertas
+        // Avisar a todas las ventanas que hay una nueva versión
+    self.clients.matchAll().then(clients => {
+        clients.forEach(client => client.postMessage({ action: "reload" }));
+    });
 });
 
 // Fetch: network-first con fallback a caché

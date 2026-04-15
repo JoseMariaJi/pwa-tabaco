@@ -8,7 +8,7 @@ const mensaje = document.getElementById("mensaje");
 const contador = document.getElementById("contador");
 const ultimo = document.getElementById("ultimo");
 const descargar = document.getElementById("descargar");
-const APP_VERSION = "v7";  // cambia esto cuando cambies el SW
+const APP_VERSION = "v8";  // cambia esto cuando cambies el SW
 
 document.getElementById("version").textContent = APP_VERSION;
 
@@ -84,5 +84,13 @@ descargar.addEventListener("click", () => {
     URL.revokeObjectURL(url);
 });
 if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("service-worker.js");
+    navigator.serviceWorker.register("service-worker.js").then(() => {
+        navigator.serviceWorker.addEventListener("message", event => {
+            if (event.data.action === "reload") {
+                console.log("Nueva versión detectada, recargando…");
+                location.reload();
+            }
+        });
+    });
 }
+

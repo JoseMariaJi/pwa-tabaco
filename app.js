@@ -8,7 +8,7 @@ const mensaje = document.getElementById("mensaje");
 const contador = document.getElementById("contador");
 const ultimo = document.getElementById("ultimo");
 const descargar = document.getElementById("descargar");
-const APP_VERSION = "v19";  // cambia esto cuando cambies el SW
+const APP_VERSION = "v20";  // cambia esto cuando cambies el SW
 
 document.getElementById("version").textContent = APP_VERSION;
 
@@ -252,7 +252,13 @@ canvas.width = 2000;             // MUY IMPORTANTE: fijar el width real del canv
     });
 // Generar eje Y fijo según el máximo del gráfico
 const maxY = grafico.scales.y.max;
-generarEjeY(maxY);
+grafico.update();
+if (contexto === "todos") {
+    document.getElementById("eje-y-fijo").style.display = "block";
+    generarEjeY(grafico.scales.y.max);
+} else {
+    document.getElementById("eje-y-fijo").style.display = "none";
+}
 
     // Scroll al final
     const cont = document.getElementById("contenedor-grafico");
@@ -357,19 +363,23 @@ function generarEjeY(max) {
     const eje = document.getElementById("eje-y-fijo");
     eje.innerHTML = "";
 
-    const pasoNumero = 5;   // mostrar número cada 5
-    const pasoRaya = 1;     // mostrar raya cada 1
+    const pasoNumero = 5;  // número cada 5
+    const pasoRaya = 1;    // raya cada 1
 
-    // Área real del gráfico (sin márgenes ni etiquetas)
+    // Coordenadas reales del gráfico
     const top = grafico.chartArea.top;
     const bottom = grafico.chartArea.bottom;
 
-    const alturaUtil = bottom - top;
+    // Coordenada exacta del valor 0 en el canvas
+    const y0 = grafico.scales.y.getPixelForValue(0);
 
-    // Número total de unidades
+    // Altura útil desde el valor máximo hasta el 0 real
+    const alturaUtil = y0 - top;
+
+    // Unidades desde max hasta 0
     const numUnidades = max;
 
-    // Altura por unidad
+    // Altura por unidad real
     const alturaUnidad = alturaUtil / numUnidades;
 
     // Generar desde max hasta 0
@@ -381,7 +391,9 @@ function generarEjeY(max) {
         div.style.justifyContent = "flex-end";
 
         // Número solo cada 5
-        const numero = (v % pasoNumero === 0) ? `<span>${v}</span>` : `<span style="width:20px;"></span>`;
+        const numero = (v % pasoNumero === 0)
+            ? `<span>${v}</span>`
+            : `<span style="width:20px;"></span>`;
 
         div.innerHTML = `
             ${numero}

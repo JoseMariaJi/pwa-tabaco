@@ -8,6 +8,9 @@ const mensaje = document.getElementById("mensaje");
 const contador = document.getElementById("contador");
 const ultimo = document.getElementById("ultimo");
 const descargar = document.getElementById("descargar");
+const APP_VERSION = "v5";  // cambia esto cuando cambies el SW
+
+document.getElementById("version").textContent = APP_VERSION;
 
 // Vibración y registro
 boton.addEventListener("click", () => {

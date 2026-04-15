@@ -3,7 +3,38 @@ body {
     text-align: center;
     padding: 20px;
 }
+#contenedor-boton {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 40px; /* opcional */
+}
+#boton-rojo {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
 
+    background-color: #ff0000;
+    border: 12px solid white;
+    outline: 4px solid #cc0000;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+
+    box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+#boton-rojo:active {
+    transform: scale(0.95);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+}
+/*
 #boton-rojo {
     background-color: red;
     color: white;
@@ -15,7 +46,7 @@ body {
     width: 80%;
     transition: transform 0.1s, background-color 0.1s;
 }
-
+*/
 #boton-rojo:active {
     background-color: darkred;
     transform: scale(0.95);

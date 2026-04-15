@@ -1,6 +1,6 @@
 // Cargar registros previos o crear array vacío
 let registros = JSON.parse(localStorage.getItem("registros")) || [];
-
+let bloqueo = false;
 // Elementos
 const boton = document.getElementById("boton-rojo");
 const contexto = document.getElementById("contexto");
@@ -8,7 +8,7 @@ const mensaje = document.getElementById("mensaje");
 const contador = document.getElementById("contador");
 const ultimo = document.getElementById("ultimo");
 const descargar = document.getElementById("descargar");
-const APP_VERSION = "v9";  // cambia esto cuando cambies el SW
+const APP_VERSION = "v10";  // cambia esto cuando cambies el SW
 
 document.getElementById("version").textContent = APP_VERSION;
 
@@ -19,6 +19,7 @@ boton.addEventListener("click", () => {
         mensaje.classList.remove("oculto");
         return;
     }
+    if (bloqueo) return; // evita doble pulsación
 
     mensaje.classList.add("oculto");
 
@@ -37,11 +38,14 @@ boton.addEventListener("click", () => {
 
     localStorage.setItem("registros", JSON.stringify(registros));
     // después de guardar en localStorage
-
+    bloqueo = true; // activa el bloqueo
+    boton.classList.add("bloqueado"); // se pone gris
     actualizarPantalla();
-        setTimeout(() => {
-        location.href = "about:blank";
-    }, 150);
+    // desbloquear después de X segundos
+    setTimeout(() => {
+        bloqueo = false;
+        boton.classList.remove("bloqueado"); // vuelve a rojo
+    }, 10000); // 3 segundos, ajusta si quieres
 
 });
 

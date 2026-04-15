@@ -34,6 +34,12 @@ body {
     transform: scale(0.95);
     box-shadow: 0 3px 6px rgba(0,0,0,0.2);
 }
+#boton-rojo.bloqueado {
+    background-color: #888 !important; /* gris */
+    box-shadow: none !important;
+    opacity: 0.6;
+}
+
 /*
 #boton-rojo {
     background-color: red;

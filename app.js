@@ -8,7 +8,7 @@ const mensaje = document.getElementById("mensaje");
 const contador = document.getElementById("contador");
 const ultimo = document.getElementById("ultimo");
 const descargar = document.getElementById("descargar");
-const APP_VERSION = "v13";  // cambia esto cuando cambies el SW
+const APP_VERSION = "v15";  // cambia esto cuando cambies el SW
 
 document.getElementById("version").textContent = APP_VERSION;
 
@@ -138,7 +138,7 @@ document.getElementById("archivoCSV").addEventListener("change", function() {
 
         // Actualizar pantalla
         actualizarPantalla();
-
+        actualizarGrafico();
         alert("Datos importados correctamente.");
     };
 
@@ -204,6 +204,10 @@ function actualizarGrafico() {
 
     // Destruir gráfico previo
     if (grafico) grafico.destroy();
+    const canvas = document.getElementById("canvas-grafico");
+canvas.style.width = "2000px";   // o el ancho que quieras
+canvas.width = 2000;             // MUY IMPORTANTE: fijar el width real del canvas
+
 
     const ctx = document.getElementById("canvas-grafico").getContext("2d");
 

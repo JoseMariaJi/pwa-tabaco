@@ -8,7 +8,7 @@ const mensaje = document.getElementById("mensaje");
 const contador = document.getElementById("contador");
 const ultimo = document.getElementById("ultimo");
 const descargar = document.getElementById("descargar");
-const APP_VERSION = "v15";  // cambia esto cuando cambies el SW
+const APP_VERSION = "v16";  // cambia esto cuando cambies el SW
 
 document.getElementById("version").textContent = APP_VERSION;
 
@@ -226,7 +226,21 @@ canvas.width = 2000;             // MUY IMPORTANTE: fijar el width real del canv
                     anchor: "center",
                     align: "center",
                     font: { size: 12 },
-                    formatter: (value) => value > 0 ? value : ""
+                    formatter: (value, ctx) => {
+                        if (value <= 0) return "";
+
+                        // Calcular total del día (suma de todos los contextos)
+                        let total = 0;
+                        ctx.chart.data.datasets.forEach(ds => {
+                            total += ds.data[ctx.dataIndex];
+                        });
+
+                        // Calcular porcentaje
+                        let pct = (value / total * 100).toFixed(0);
+
+                        return `${value} (${pct}%)`;
+                    }
+
                 }
             },
             scales: {
@@ -280,11 +294,61 @@ function calcularDatos(periodo) {
         }
     }
 
-    // Semanas y meses se implementan igual (si quieres, te los preparo también)
+    if (periodo === "semana") {
+    // Obtener la semana ISO actual
+    const actual = obtenerSemanaISO(ahora);
+
+    // Generar las últimas 6 semanas
+    let semanas = [];
+    for (let i = 5; i >= 0; i--) {
+        let year = actual.year;
+        let week = actual.week - i;
+
+        // Si la semana es <= 0, retrocedemos al año anterior
+        if (week <= 0) {
+            year--;
+            const semanasAñoAnterior = obtenerSemanaISO(new Date(year, 11, 31)).week;
+            week = semanasAñoAnterior + week;
+        }
+
+        semanas.push({ year, week });
+        labels.push(`${year}-W${week}`);
+    }
+
+    // Inicializar datos
+    semanas.forEach(() => {
+        for (let ctx in datosPorContexto) datosPorContexto[ctx].push(0);
+    });
+
+    // Rellenar datos desde registros
+    registros.forEach(r => {
+        const { year, week } = obtenerSemanaISO(r.fecha);
+        const idx = semanas.findIndex(s => s.year === year && s.week === week);
+        if (idx !== -1) {
+            datosPorContexto[r.contexto][idx]++;
+        }
+    });
+}
+
 
     return { labels, datosPorContexto };
 }
 
+function obtenerSemanaISO(fecha) {
+    const d = new Date(fecha);
+    d.setHours(0, 0, 0, 0);
+
+    // Jueves de la semana actual
+    d.setDate(d.getDate() + 3 - ((d.getDay() + 6) % 7));
+
+    const semana1 = new Date(d.getFullYear(), 0, 4);
+    const diff = (d - semana1) / 86400000;
+
+    return {
+        year: d.getFullYear(),
+        week: 1 + Math.floor(diff / 7)
+    };
+}
 
 
 

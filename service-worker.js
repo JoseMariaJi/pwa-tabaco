@@ -1,4 +1,4 @@
-const CACHE = "tabaco-cache-v5";
+const CACHE = "tabaco-cache-v6";
 const FILES = [
     "./",
     "./index.html",
@@ -7,14 +7,38 @@ const FILES = [
     "./manifest.json"
 ];
 
-self.addEventListener("install", e => {
-    e.waitUntil(
+// Instalar: cachea los archivos
+self.addEventListener("install", event => {
+    self.skipWaiting(); // activa el SW nuevo inmediatamente
+    event.waitUntil(
         caches.open(CACHE).then(cache => cache.addAll(FILES))
     );
 });
 
-self.addEventListener("fetch", e => {
-    e.respondWith(
-        caches.match(e.request).then(resp => resp || fetch(e.request))
+// Activar: limpia cachés antiguas y toma control inmediato
+self.addEventListener("activate", event => {
+    event.waitUntil(
+        caches.keys().then(keys =>
+            Promise.all(
+                keys
+                    .filter(key => key !== CACHE)
+                    .map(key => caches.delete(key))
+            )
+        )
+    );
+    self.clients.claim(); // el SW nuevo controla todas las ventanas ya abiertas
+});
+
+// Fetch: network-first con fallback a caché
+self.addEventListener("fetch", event => {
+    event.respondWith(
+        fetch(event.request)
+            .then(response => {
+                // Actualiza la caché en segundo plano
+                const clone = response.clone();
+                caches.open(CACHE).then(cache => cache.put(event.request, clone));
+                return response;
+            })
+            .catch(() => caches.match(event.request))
     );
 });

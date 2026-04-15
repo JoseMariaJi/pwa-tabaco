@@ -8,7 +8,7 @@ const mensaje = document.getElementById("mensaje");
 const contador = document.getElementById("contador");
 const ultimo = document.getElementById("ultimo");
 const descargar = document.getElementById("descargar");
-const APP_VERSION = "v11";  // cambia esto cuando cambies el SW
+const APP_VERSION = "v12";  // cambia esto cuando cambies el SW
 
 document.getElementById("version").textContent = APP_VERSION;
 
@@ -216,6 +216,7 @@ function actualizarGrafico() {
         options: {
             responsive: false,
             plugins: {
+                legend: { display: false },
                 datalabels: {
                     color: "#000",
                     anchor: "end",

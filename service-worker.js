@@ -1,4 +1,4 @@
-const CACHE = "tabaco-cache-v11";
+const CACHE = "tabaco-cache-v12";
 const FILES = [
     "./",
     "./index.html",
